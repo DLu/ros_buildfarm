@@ -1,0 +1,46 @@
+test_cases:
+  - build_status:
+      ubuntu:
+        trusty:
+          amd64: {build: 1.2.1-0trusty-20180517-084419-0800, main: 1.2.1-0trusty-20180317-100619-0800,
+            test: 1.2.1-0trusty-20180517-084419-0800}
+          armhf: {build: 1.2.1-0trusty-20180519-162619-0800, main: 1.2.1-0trusty-20180319-012433-0800,
+            test: 1.2.1-0trusty-20180519-162619-0800}
+          i386: {build: 1.2.1-0trusty-20180517-080409-0800, main: 1.2.1-0trusty-20180317-102156-0800,
+            test: 1.2.1-0trusty-20180317-102156-0800}
+          source: {build: 1.2.1-0trusty, main: 1.2.1-0trusty, test: 1.2.1-0trusty}
+    result: released
+  - build_status:
+      ubuntu:
+        trusty:
+          amd64: {build: 1.2.1-0trusty-20180517-084419-0800,
+            test: 1.2.1-0trusty-20180517-084419-0800}
+          armhf: {build: 1.2.1-0trusty-20180519-162619-0800,
+            test: 1.2.1-0trusty-20180519-162619-0800}
+          i386: {build: 1.2.1-0trusty-20180517-080409-0800,
+            test: 1.2.1-0trusty-20180317-102156-0800}
+          source: {build: 1.2.1-0trusty, test: 1.2.1-0trusty}
+    result: waiting for new release
+  - build_status:
+      ubuntu:
+        trusty:
+          amd64: {build: 1.2.1-0trusty-20180517-084419-0800, main: 1.2.0-0trusty-20180317-100619-0800,
+            test: 1.2.1-0trusty-20180517-084419-0800}
+          armhf: {build: 1.2.1-0trusty-20180519-162619-0800, main: 1.2.0-0trusty-20180319-012433-0800,
+            test: 1.2.1-0trusty-20180519-162619-0800}
+          i386: {build: 1.2.1-0trusty-20180517-080409-0800, main: 1.2.0-0trusty-20180317-102156-0800,
+            test: 1.2.1-0trusty-20180317-102156-0800}
+          source: {build: 1.2.1-0trusty, main: 1.2.1-0trusty, test: 1.2.1-0trusty}
+    result: waiting for re-release
+expected:
+  indigo:
+    ubuntu:
+      trusty:
+        - source
+        - i386
+        - amd64
+        - armhf
+blacklist:
+  blacklisted_package:
+    indigo:
+      - [ubuntu, trusty, armhf]

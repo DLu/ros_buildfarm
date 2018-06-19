@@ -60,7 +60,7 @@ def get_distro_status(D, expected, blacklist, candidates=CANDIDATES, skip_source
     combo_map = collections.defaultdict(set)
 
     for os_name in expected:
-        os_d = D['build_status'].get(os_name, {})
+        os_d = D.get(os_name, {})
         for os_distro in expected[os_name]:
             osd_d = os_d.get(os_distro, {})
             for binary_type in expected[os_name][os_distro]:
@@ -190,7 +190,7 @@ def get_aggregate_status(D, expected, pkg_name=None, blacklist={}):
     for distro in sorted(D):
         if distro == 'maintainers':
             continue
-        status = get_distro_status(D[distro], expected[distro], blacklist.get(pkg_name, {}).get(distro, set()))
+        status = get_distro_status(D[distro]['build_status'], expected[distro], blacklist.get(pkg_name, {}).get(distro, set()))
         per_distro[distro] = status
 
     return per_distro

@@ -51,7 +51,6 @@ def merge_status_yaml(data, new_data, new_distro):
 def get_multi_distro_status(distros):
     status = {}
     for (distro, machine), filename in sorted(get_yaml_filenames().items()):
-        print repr(distro), distros
         if distro not in distros:
             continue
         print('Loading {}/{}'.format(distro, machine))
