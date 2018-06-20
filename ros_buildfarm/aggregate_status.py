@@ -51,7 +51,7 @@ def sub_filter(D, o_filter=None, d_filter=None, b_filter=None, c_filter=None):
     return {'build_status': D2}
 
 
-def get_distro_status(D, expected, blacklist, candidates=CANDIDATES, skip_source=False):
+def get_distro_status(D, expected, blacklist, candidates=CANDIDATES, skip_source=False, debug=True):
     version_map = collections.defaultdict(list)
     os_map = collections.defaultdict(set)
     distro_map = collections.defaultdict(set)
@@ -100,38 +100,38 @@ def get_distro_status(D, expected, blacklist, candidates=CANDIDATES, skip_source
         if map_check(build_map, ['source'], a):
             return 'source builds, binary doesn\'t'
         elif b is not None and map_check(build_map, ['source'], b):
-            return 'source builds, binary doesn\'t'
+            return 'source builds, binary doesn\'t B'
 
     if counts['distro'] == 2:
         a, b = distro_map.values()
         if len(a.intersection(b)) == 0 and None in distro_map:
             value = distro_map[None]
-            return 'does not build on ' + ', '.join(list(value))
+            return 'A does not build on ' + ', '.join(sorted(value))
 
     if counts['build_type'] == 2:
         a, b = build_map.values()
         if len(a.intersection(b)) == 0 and None in build_map:
             value = build_map[None]
-            return 'does not build on ' + ', '.join(list(value))
+            return 'B does not build on ' + ', '.join(sorted(value))
 
     if len(combo_map) == 2:
         a, b = combo_map.values()
         if len(a.intersection(b)) == 0 and None in combo_map:
             value = combo_map[None]
-            return 'does not build on ' + ', '.join(list(value))
+            return 'C does not build on ' + ', '.join(sorted(value))
 
     if None in version_map:
         values = version_map[None]
         DX = set([(os_distro, binary_type) for os_name, os_distro, binary_type, candidate in values])
         if len(DX) == 1:
             a, b = list(DX)[0]
-            return "doesn't build on %s/%s" % (a, b)
+            return "D doesn't build on %s/%s" % (a, b)
 
     if candidates == CANDIDATES:
         sub_candidates = CANDIDATES[:-1]  # skip main
         status = get_distro_status(D, expected, blacklist, sub_candidates)
         if status and status != 'released':
-            return status
+            return 'E' + status
 
         status = get_distro_status(D, expected, blacklist, sub_candidates, True)
         if status and status != 'released':
@@ -139,8 +139,10 @@ def get_distro_status(D, expected, blacklist, candidates=CANDIDATES, skip_source
 
     if len(combo_map) == 2 and None in combo_map:
         value = combo_map[None]
-        return 'does not build on ' + ', '.join(list(value))
+        return 'F does not build on ' + ', '.join(sorted(value))
 
+    if not debug:
+        return
     print dict(os_map)
     print dict(distro_map)
     print dict(build_map)
@@ -190,7 +192,9 @@ def get_aggregate_status(D, expected, pkg_name=None, blacklist={}):
     for distro in sorted(D):
         if distro == 'maintainers':
             continue
-        status = get_distro_status(D[distro]['build_status'], expected[distro], blacklist.get(pkg_name, {}).get(distro, set()))
+        status = get_distro_status(D[distro]['build_status'],
+                                   expected[distro],
+                                   blacklist.get(pkg_name, {}).get(distro, set()))
         per_distro[distro] = status
 
     return per_distro
