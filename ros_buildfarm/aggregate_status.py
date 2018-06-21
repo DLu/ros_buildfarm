@@ -113,18 +113,18 @@ def get_distro_status(D, expected, blacklist, candidates=CANDIDATES, skip_source
             # these versions could be (None, version) or (old_version, new_version)
 
             if cpu_version0 is None:
-                return 'source builds, binary doesn\'t B'
+                return 'source builds, binary doesn\'t'
             elif map_value_matches(cpu_map, cpu_version0, ['source']):
                 # the source is the only thing that builds for the new version
                 return 'source builds, binary doesn\'t'
 
         if no_overlap_in_values_and_none(flavor_map):
             # if the thing that separates the working builds and nonworking builds is the os_flavor
-            return 'A does not build on ' + ', '.join(sorted(flavor_map[None]))
+            return 'does not build on ' + ', '.join(sorted(flavor_map[None]))
         elif no_overlap_in_values_and_none(cpu_map):
-            return 'B does not build on ' + ', '.join(sorted(cpu_map[None]))
+            return 'does not build on ' + ', '.join(sorted(cpu_map[None]))
         elif no_overlap_in_values_and_none(combo_map):
-            return 'C does not build on ' + ', '.join(sorted(combo_map[None]))
+            return 'does not build on ' + ', '.join(sorted(combo_map[None]))
 
     # If there are three different versions availble
     elif len(version_map) == 3:
@@ -139,13 +139,13 @@ def get_distro_status(D, expected, blacklist, candidates=CANDIDATES, skip_source
         DX = set([(os_flavor, cpu) for os_name, os_flavor, cpu, candidate in version_map[None]])
         if len(DX) == 1:
             os_flavor, cpu = list(DX)[0]
-            return "D doesn't build on %s/%s" % (os_flavor, cpu)
+            return "doesn't build on %s/%s" % (os_flavor, cpu)
 
     if candidates == CANDIDATES:
         sub_candidates = CANDIDATES[:-1]  # skip main
         status = get_distro_status(D, expected, blacklist, sub_candidates)
         if status and status != 'released':
-            return 'E' + status
+            return status
 
         status = get_distro_status(D, expected, blacklist, sub_candidates, True)
         if status and status != 'released':

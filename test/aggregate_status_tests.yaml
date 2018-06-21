@@ -47,7 +47,7 @@ test_cases:
         ubuntu:
           trusty:
             source: {build: 0.0.1-1trusty, main: 0.0.1-1trusty, test: 0.0.1-1trusty}
-    result: source builds, binary doesn't B
+    result: source builds, binary doesn't
   - build_status:
         ubuntu:
           trusty:
@@ -59,7 +59,7 @@ test_cases:
               test: 1.2.3-0trusty-20180317-102156-0800}
             source: {build: 1.2.1-0trusty, main: 1.2.1-0trusty, test: 1.2.1-0trusty}
     result: source builds, binary doesn't
-  - result: B does not build on armhf
+  - result: does not build on armhf
     build_status:
       ubuntu:
         trusty:
@@ -68,14 +68,14 @@ test_cases:
           i386: {build: 0.1.1-0trusty-20180605-064610-0800, main: 0.1.1-0trusty-20180605-064610-0800,
             test: 0.1.1-0trusty-20180605-064610-0800}
           source: {build: 0.1.1-0trusty, main: 0.1.1-0trusty, test: 0.1.1-0trusty}
-  - result: B does not build on armhf, i386
+  - result: does not build on armhf, i386
     build_status:
       ubuntu:
         trusty:
           amd64: {build: 0.1.1-0trusty-20180604-045911-0800, main: 0.1.1-0trusty-20180604-045911-0800,
             test: 0.1.1-0trusty-20180604-045911-0800}
           source: {build: 0.1.1-0trusty, main: 0.1.1-0trusty, test: 0.1.1-0trusty}
-  - result: C does not build on stretch/amd64, stretch/arm64
+  - result: does not build on stretch/amd64, stretch/arm64
     distro: melodic
     build_status:
         debian:
@@ -94,12 +94,12 @@ test_cases:
             armhf: {build: 0.1.22-0bionic.20180607.112928, main: 0.1.22-0bionic.20180607.112928,
               test: 0.1.22-0bionic.20180607.112928}
             source: {build: 0.1.22-0bionic, main: 0.1.22-0bionic, test: 0.1.22-0bionic}
-  - result: Esource builds, binary doesn't B
+  - result: source builds, binary doesn't
     build_status:
         ubuntu:
           trusty:
             source: {build: 0.0.1-1trusty, main: 0.0.2-1trusty, test: 0.0.1-1trusty}
-  - result: "D doesn't build on trusty/armhf"
+  - result: "doesn't build on trusty/armhf"
     build_status:
       ubuntu:
         trusty:
@@ -125,7 +125,7 @@ test_cases:
           amd64: {build: 1.2.1-0trusty-20180517-084419-0800, main: 1.2.1-0trusty-20180317-100619-0800,
             test: 1.2.1-0trusty-20180517-084419-0800}
           source: {build: 1.2.1-0trusty, main: 1.2.1-0trusty, test: 1.2.1-0trusty}
-    result: A does not build on bionic, stretch
+    result: does not build on bionic, stretch
     distro: melodic
 expected:
   indigo:
