@@ -124,6 +124,24 @@ def collect_expected_values(build_file_dict):
     return C
 
 
+def merge_statuses(statuses):
+    if len(statuses) == 1:
+        return list(statuses)[0]
+    all_waiting = True
+    all_broken = True
+    for status in statuses:
+        if 'waiting' not in status:
+            all_waiting = False
+        if 'build' not in status:
+            all_broken = False
+    if all_waiting:
+        return 'waiting for new/re-release'
+    elif all_broken:
+        return 'does not build on some platforms'
+    else:
+        return 'mixed'
+
+
 def build_super_status_page(config_url, output_dir='.', distros=[]):
     config = get_config_index(config_url)
     if len(distros) == 0:
@@ -167,20 +185,10 @@ def build_super_status_page(config_url, output_dir='.', distros=[]):
                     repo_set[distro].add(status)
             repo_dict['status'] = {}
             for distro, statuses in repo_set.items():
-                d_status = None
-                if len(statuses) == 1:
-                    d_status = list(statuses)[0]
-                else:
-                    d_status = 'mixed'
-                repo_dict['status'][distro] = d_status
+                repo_dict['status'][distro] = merge_statuses(statuses)
         org_dict['status'] = {}
         for distro, statuses in org_set.items():
-            d_status = None
-            if len(statuses) == 1:
-                d_status = list(statuses)[0]
-            else:
-                d_status = 'mixed'
-            org_dict['status'][distro] = d_status
+            org_dict['status'][distro] = merge_statuses(statuses)
 
     print('Write parsed yaml file')
     yaml_filename = os.path.join(output_dir, 'super_status.yaml')

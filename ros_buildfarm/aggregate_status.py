@@ -139,7 +139,7 @@ def get_distro_status(D, expected, blacklist, candidates=CANDIDATES, skip_source
         DX = set([(os_flavor, cpu) for os_name, os_flavor, cpu, candidate in version_map[None]])
         if len(DX) == 1:
             os_flavor, cpu = list(DX)[0]
-            return "doesn't build on %s/%s" % (os_flavor, cpu)
+            return "does not build on %s/%s" % (os_flavor, cpu)
 
     if candidates == CANDIDATES:
         sub_candidates = CANDIDATES[:-1]  # skip main
@@ -175,6 +175,8 @@ def get_aggregate_status(D, expected, pkg_name=None, blacklist={}, debug=False):
                                    expected[distro],
                                    blacklist.get(pkg_name, {}).get(distro, set()),
                                    debug=debug)
+        if status is None:
+            status = 'complicated'
         per_distro[distro] = status
 
     return per_distro

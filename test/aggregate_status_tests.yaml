@@ -99,7 +99,7 @@ test_cases:
         ubuntu:
           trusty:
             source: {build: 0.0.1-1trusty, main: 0.0.2-1trusty, test: 0.0.1-1trusty}
-  - result: "doesn't build on trusty/armhf"
+  - result: does not build on trusty/armhf
     build_status:
       ubuntu:
         trusty:

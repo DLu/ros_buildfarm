@@ -21,6 +21,7 @@
     font-weight: 900;
     font-family: "Font Awesome 5 Free";
     font-style: normal;
+    font-size: 150%;
   }
   .status:before {
     content: "\f0a3";
@@ -45,6 +46,11 @@
     content: "\f057";
     color: red
   }
+  .complicated:before {
+    content: "\f1d0";
+    font-family: "Font Awesome 5 Brands";
+    color: red
+  }
   </style>
 </head>
 @{
@@ -62,6 +68,8 @@ def status_cell(status):
         css_class = 'mixed'
     elif 'build' in status:
         css_class = 'broken'
+    elif 'complicated' in status:
+        css_class = 'complicated'
     return '<td class="status {}" title="{}"></td>'.format(css_class, status)
 }
 <body>
