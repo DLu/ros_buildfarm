@@ -117,7 +117,8 @@ def status_cell(status):
 
     <script type="text/javascript">
         com_github_culmat_jsTreeTable.register(this);
-        treeTable($('#table'))
+        table = treeTable($('#table'));
+        table.expandLevel(0);
         window.tbody_ready();
     </script>
   </table>
