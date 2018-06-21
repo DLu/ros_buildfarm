@@ -153,18 +153,18 @@ def get_distro_status(D, expected, blacklist, candidates=CANDIDATES, skip_source
 
     if not debug:
         return
-    print '{} versions ({})'.format(len(version_map), ', '.join(map(str, sorted(version_map))))
+    print('{} versions ({})'.format(len(version_map), ', '.join(map(str, sorted(version_map)))))
     for name, M in [('os', os_map), ('flavor', flavor_map), ('cpu', cpu_map), ('candidate', candidate_map),
                     ('combo', combo_map)]:
-        print name
+        print(name)
         for version, values in M.iteritems():
-            print '\t{}: {}'.format(version, ', '.join(values))
+            print('\t{}: {}'.format(version, ', '.join(values)))
 
     for version, M in sorted(version_map.items()):
-        print version, len(M)
+        print(version, len(M))
         if version is None:
-            print M
-    print
+            print(M)
+    print()
 
 def get_aggregate_status(D, expected, pkg_name=None, blacklist={}, debug=False):
     per_distro = {}

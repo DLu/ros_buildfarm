@@ -12,5 +12,5 @@ for i, case in enumerate(D['test_cases']):
     if status == case['result']:
         match += 1
     else:
-        print 'Failure in test case #{}: {} != {}'.format(i + 1, status, case['result'])
-print '{}/{} correct'.format(match, len(D['test_cases']))
+        print('Failure in test case #{}: {} != {}'.format(i + 1, status, case['result']))
+print('{}/{} correct'.format(match, len(D['test_cases'])))
