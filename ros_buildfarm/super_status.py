@@ -2,6 +2,7 @@ import collections
 import os
 import requests
 import re
+import time
 import yaml
 from .aggregate_status import get_aggregate_status
 from .config import get_index as get_config_index, get_release_build_files
@@ -126,7 +127,7 @@ def collect_expected_values(build_file_dict):
 def build_super_status_page(config_url, output_dir='.', distros=[]):
     config = get_config_index(config_url)
     if len(distros) == 0:
-        distros = list(config.distributions.keys())
+        distros = list(sorted(config.distributions.keys()))
 
     build_file_dict = {}
     for distro in distros:
@@ -188,6 +189,14 @@ def build_super_status_page(config_url, output_dir='.', distros=[]):
     output_filename = os.path.join(output_dir, 'super_status.html')
     print("Generating super status page '%s':" % output_filename)
     template_name = 'status/super_status_page.html.em'
-    html = expand_template(template_name, super_status)
+    start_time = time.time()
+    data = {
+        'title': 'ROS Buildfarm Super Status',
+        'start_time': start_time,
+        'start_time_local_str': time.strftime('%Y-%m-%d %H:%M:%S %z', time.localtime(start_time)),
+        'super_status': super_status,
+        'distros': distros
+    }
+    html = expand_template(template_name, data)
     with open(output_filename, 'w') as h:
         h.write(html)
