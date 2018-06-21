@@ -12,12 +12,58 @@
   <script type="text/javascript" src="js/setup.js"></script>
 
   <link rel="stylesheet" type="text/css" href="css/status_page.css" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
   <style>
   tbody tr td span { display: inline; }
   .organization { font-size: 130%; }
   .repo { font-size: 115%; }
+  .status {
+    font-weight: 900;
+    font-family: "Font Awesome 5 Free";
+    font-style: normal;
+  }
+  .status:before {
+    content: "\f0a3";
+  }
+  .released:before {
+    content: "\f14a";
+    color: green;
+  }
+  .waiting:before {
+    content: "\f055";
+    color: blue;
+  }
+  .source:before {
+    content: "\f1c9";
+    color: red;
+  }
+  .mixed:before {
+    content: "\f24d";
+    color: gray;
+  }
+  .broken:before {
+    content: "\f057";
+    color: red
+  }
   </style>
 </head>
+@{
+def status_cell(status):
+    if not status:
+        return '<td></td>'
+    css_class = ''
+    if status == 'released':
+        css_class = status
+    elif 'waiting' in status:
+        css_class = 'waiting'
+    elif 'source' in status:
+        css_class = 'source'
+    elif status == 'mixed':
+        css_class = 'mixed'
+    elif 'build' in status:
+        css_class = 'broken'
+    return '<td class="status {}" title="{}"></td>'.format(css_class, status)
+}
 <body>
   <script type="text/javascript">
     window.body_ready_with_age(moment.duration(moment() - moment("@start_time", "X")));
@@ -41,31 +87,19 @@
     @[for org in sorted(super_status, key=lambda d: d.lower())]@
     <tr data-tt-id="O@org" data-tt-level="1"><td class="organization">@org
         @[for distro in distros]@
-        @[if distro in super_status[org]['status'] ]@
-        <td>@super_status[org]['status'][distro]
-        @[else]
-        <td>
-        @[end if]
+        @status_cell(super_status[org]['status'].get(distro))
         @[end for]@
     </tr>
         @[for repo in sorted(super_status[org]['repos'])]@
         <tr data-tt-id="R@repo" data-tt-parent-id="O@org" data-tt-level="2"><td class="repo">@repo
             @[for distro in distros]@
-            @[if distro in super_status[org]['repos'][repo]['status'] ]@
-            <td>@super_status[org]['repos'][repo]['status'][distro]
-            @[else]
-            <td>
-            @[end if]
+            @status_cell(super_status[org]['repos'][repo]['status'].get(distro))
             @[end for]@
         </tr>
             @[for pkg in sorted(super_status[org]['repos'][repo]['pkgs'])]@
             <tr data-tt-id="@pkg" data-tt-parent-id="R@repo" data-tt-level="3"><td class="pkg">@pkg
                 @[for distro in distros]@
-                @[if distro in super_status[org]['repos'][repo]['pkgs'][pkg]['status'] ]@
-                <td>@super_status[org]['repos'][repo]['pkgs'][pkg]['status'][distro]
-                @[else]
-                <td>
-                @[end if]
+                @status_cell(super_status[org]['repos'][repo]['pkgs'][pkg]['status'].get(distro))
                 @[end for]@
             </tr>
             @[end for]@
