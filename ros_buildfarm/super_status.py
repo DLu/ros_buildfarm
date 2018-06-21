@@ -15,6 +15,17 @@ BB_PATTERN = re.compile('https://bitbucket.org/(.*)/(.*)')
 GITLAB_PATTERN = re.compile('https?://gitlab.[^/]+/([^/]+)/(.+).git')
 URL_PATTERNS = [GITHUB_PATTERN, GITHUB_BRANCH_PATTERN, BB_PATTERN, GITLAB_PATTERN]
 
+"""
+  Naming Conventions
+   * distro refers to ROS Distro (e.g. indigo)
+   * machine refers to different release builds (e.g. default, uxhf, dsv8)
+   * os_name refers to the name of the Operating System (e.g. ubuntu, debian)
+   * os_flavor refers to specific distros of the os (e.g. xenial, jessie)
+   * cpu refers to the cpu architecture (or source), (e.g. i386, amd64, source)
+   * candidate refers to different candidate builds, (e.g. build, test, main)
+   * combo refers to the os_flavor + the cpu
+"""
+
 
 def get_yaml_filenames():
     filenames = {}
@@ -94,8 +105,8 @@ def get_blacklist(build_file_dict):
             for pkg in build_file.package_blacklist:
                 for os_name, os_d in build_file.targets.items():
                     for os_flavor, fl_d in os_d.items():
-                        for build in fl_d:
-                            blacklist[pkg][distro].add((os_name, os_flavor, build))
+                        for cpu in fl_d:
+                            blacklist[pkg][distro].add((os_name, os_flavor, cpu))
     return dict(blacklist)
 
 
@@ -107,8 +118,8 @@ def collect_expected_values(build_file_dict):
             for os_name, os_d in build_file.targets.items():
                 for os_flavor, fl_d in os_d.items():
                     C[distro][os_name][os_flavor].add('source')
-                    for build in fl_d:
-                        C[distro][os_name][os_flavor].add(build)
+                    for cpu in fl_d:
+                        C[distro][os_name][os_flavor].add(cpu)
     return C
 
 

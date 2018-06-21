@@ -108,6 +108,25 @@ test_cases:
           i386: {build: 0.1.1-0trusty-20180605-064610-0800, main: 0.1.2-0trusty-20180605-064610-0800,
             test: 0.1.1-0trusty-20180605-064610-0800}
           source: {build: 0.1.1-0trusty, main: 0.1.2-0trusty, test: 0.1.1-0trusty}
+  - result: released
+    build_status:
+      ubuntu:
+        trusty:
+          amd64: {build: 0.1.1-0trusty-20180604-045911-0800, main: 0.1.1-0trusty-20180604-045911-0800,
+            test: 0.1.1-0trusty-20180604-045911-0800}
+          i386: {build: 0.1.1-0trusty-20180605-064610-0800, main: 0.1.1-0trusty-20180605-064610-0800,
+            test: 0.1.1-0trusty-20180605-064610-0800}
+          source: {build: 0.1.1-0trusty, main: 0.1.1-0trusty, test: 0.1.1-0trusty}
+    blacklist:
+        - [ubuntu, trusty, armhf]
+  - build_status:
+      ubuntu:
+        artful:
+          amd64: {build: 1.2.1-0trusty-20180517-084419-0800, main: 1.2.1-0trusty-20180317-100619-0800,
+            test: 1.2.1-0trusty-20180517-084419-0800}
+          source: {build: 1.2.1-0trusty, main: 1.2.1-0trusty, test: 1.2.1-0trusty}
+    result: A does not build on bionic, stretch
+    distro: melodic
 expected:
   indigo:
     ubuntu:
@@ -122,12 +141,3 @@ expected:
     ubuntu:
       artful: [amd64, source]
       bionic: [amd64, arm64, armhf, source]
-
-blacklist:
-  blacklisted_package:
-    indigo:
-      - [ubuntu, trusty, armhf]
-
-# A does not build on ' + ', '.join(list(value))
-# binary: ' + status
-# F does not build on ' + ', '.join(list(value))
